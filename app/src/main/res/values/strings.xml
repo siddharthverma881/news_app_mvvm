@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Ok Credit Assignment</string>
+    <string name="network_status_online">ONLINE</string>
+    <string name="network_status_offline">OFFLINE</string>
+</resources>
