@@ -1,11 +1,7 @@
-package com.example.okcreditassignment.ui
+package com.example.okcreditassignment.ui.news
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.okcreditassignment.model.CommonMLDPojo
 import com.example.okcreditassignment.model.news.Article
 import com.example.okcreditassignment.model.news.NewsModel
@@ -14,18 +10,23 @@ import com.example.okcreditassignment.repository.NewsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class NewsViewModel(private val repository: NewsRepository) : ViewModel() {
 
-    private val newsMutableLiveData : MutableLiveData<CommonMLDPojo> = MutableLiveData()
-    val newsLiveData : LiveData<CommonMLDPojo>
-        get() = newsMutableLiveData
+//    private val newsMutableLiveData : MutableLiveData<CommonMLDPojo> = MutableLiveData()
+//    val newsLiveData : LiveData<CommonMLDPojo>
+//        get() = newsMutableLiveData
 
     private val articleMutableList : MutableLiveData<CommonMLDPojo> = MutableLiveData()
     val articleLiveData : LiveData<CommonMLDPojo>
     get() = articleMutableList
 
-    fun getHeadlines(map : HashMap<String,String>, isConnected : Boolean){
+    private val mutableArticle : MutableLiveData<Article> = MutableLiveData()
+    val selectedArticle : LiveData<Article>
+        get() = mutableArticle
+
+    fun getHeadlines(map : HashMap<String,String>?, isConnected : Boolean){
         /*viewModelScope(Dispatchers.IO).launch {
             val result = repository.getNewsHeadLines(map, isConnected)
             if(result.isSuccessful){
@@ -39,16 +40,20 @@ class NewsViewModel(private val repository: NewsRepository) : ViewModel() {
                 Log.e("ViewModel", "Error")
             }
         }*/
-
+//        viewModelScope.launch(Dispatchers.IO){
+//            val livedata = repository.getAllArticles(map, isConnected)
+//            articleMutableList.postValue(livedata.value)
+//        }
         CoroutineScope(Dispatchers.IO).launch{
-            repository.getAllArticles(map, isConnected)
+            val livedata = repository.getAllArticles(map, isConnected)
+            withContext(Dispatchers.Main) {
+                articleMutableList.value = livedata.value
+            }
         }
-        repository.articleLivedata.observeForever {
-//            it?.let {
-//                articleMutableList.value = it
-//            }
-            articleMutableList.value = it
-        }
+    }
+
+    fun setArticle(article: Article){
+        mutableArticle.value = article
     }
 }
 

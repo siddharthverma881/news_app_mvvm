@@ -5,6 +5,8 @@ import android.content.Context
 interface Constants {
     companion object {
         val NETWORK_STATUS_TIMER: Long = 4000
+        val API_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+        val END_USER_DATE_FORMAT = "dd MMM, yyyy hh:mm aa"
     }
 //    enum class StatusDescription(private val resourceId: Int) {
 //        CUSTOM(-1),

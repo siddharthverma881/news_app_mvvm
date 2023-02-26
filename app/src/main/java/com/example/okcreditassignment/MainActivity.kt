@@ -3,13 +3,7 @@ package com.example.okcreditassignment
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.okcreditassignment.di.AppModule
-import com.example.okcreditassignment.network.networkModule
-import com.example.okcreditassignment.ui.NewsActivity
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
-import org.koin.core.logger.Level
+import com.example.okcreditassignment.ui.news.NewsActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

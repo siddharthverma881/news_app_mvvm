@@ -6,6 +6,8 @@
         <entry key="app/src/main/res/drawable/ic_network_connected.xml" value="0.146" />
         <entry key="app/src/main/res/drawable/ic_network_disconnected.xml" value="0.146" />
         <entry key="app/src/main/res/layout/activity_news.xml" value="0.3417874396135266" />
+        <entry key="app/src/main/res/layout/fragment_detail.xml" value="0.343015214384509" />
+        <entry key="app/src/main/res/layout/fragment_list.xml" value="0.26979166666666665" />
         <entry key="app/src/main/res/layout/layout_news.xml" value="0.28028503562945367" />
       </map>
     </option>

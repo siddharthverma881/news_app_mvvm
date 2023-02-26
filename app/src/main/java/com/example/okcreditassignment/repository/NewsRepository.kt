@@ -25,7 +25,7 @@ class NewsRepository(private val database: CustomDatabase) : BaseRepository() {
         return@withContext apiInterface.getNewsHeadlines(map)
     }
 
-    suspend fun getAllArticles(map : Map<String, String>, isConnected : Boolean) {
+    /*suspend fun getAllArticles(map : Map<String, String>, isConnected : Boolean) {
         if(isConnected) {
             val result = apiInterface.getNewsHeadlines(map)
             if(result.isSuccessful){
@@ -38,6 +38,24 @@ class NewsRepository(private val database: CustomDatabase) : BaseRepository() {
         else {
             mutableArticleLiveData.postValue(CommonMLDPojo(true, "", database.articleDao.getAllArticles()))
         }
+    }*/
+
+    suspend fun getAllArticles(map : Map<String, String>?, isConnected : Boolean) : LiveData<CommonMLDPojo> {
+        val mutableLiveData : MutableLiveData<CommonMLDPojo> = MutableLiveData()
+
+        if(isConnected) {
+            val result = apiInterface.getNewsHeadlines(map!!)
+            if(result.isSuccessful){
+                val newsModel = result.body() as NewsModel
+                mutableLiveData.postValue(CommonMLDPojo(true, "", newsModel.articles))
+            } else {
+                mutableLiveData.postValue(CommonMLDPojo(false,result.errorBody().toString(),null))
+            }
+        }
+        else {
+            mutableLiveData.postValue(CommonMLDPojo(true, "", database.articleDao.getAllArticles()))
+        }
+        return mutableLiveData
     }
 
     suspend fun saveNews(response : CommonMLDPojo){

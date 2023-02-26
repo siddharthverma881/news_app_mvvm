@@ -6,7 +6,7 @@ import com.example.okcreditassignment.db.dao.ArticleDao
 import com.example.okcreditassignment.db.dao.NewsDao
 import com.example.okcreditassignment.db.CustomDatabase
 import com.example.okcreditassignment.repository.NewsRepository
-import com.example.okcreditassignment.ui.NewsViewModel
+import com.example.okcreditassignment.ui.news.NewsViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module

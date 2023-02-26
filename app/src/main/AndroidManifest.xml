@@ -18,7 +18,7 @@
         android:theme="@style/Theme.OkCreditAssignment"
         tools:targetApi="31">
         <activity
-            android:name=".ui.NewsActivity"
+            android:name=".ui.news.NewsActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

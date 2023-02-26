@@ -1,10 +1,13 @@
 package com.example.okcreditassignment.appData
 
+import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
+import android.net.Uri
 import android.support.multidex.BuildConfig
 import android.util.Log
-import androidx.core.content.ContextCompat.getSystemService
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
@@ -77,6 +80,19 @@ object Utils {
         return SimpleDateFormat(desiredFormat, locale).format(date)
     }
 
+    fun getDate(dateTime: String) : Date{
+        var date : Date
+        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        try {
+            date = format.parse(dateTime)
+            System.out.println(date)
+        } catch (e: ParseException) {
+            date = Date()
+            e.printStackTrace()
+        }
+        return date
+    }
+
     fun convertToLocal(dateTime: String, format: String, desiredFormat: String, locale: Locale? = Locale.ENGLISH): String {
         Log.e("UTC Date", dateTime + "")
         val utcFormat: DateFormat = SimpleDateFormat(format, locale)
@@ -86,13 +102,22 @@ object Utils {
             date = utcFormat.parse(dateTime)
         } catch (e: ParseException) {
             date = Date()
-//            e.printStackTrace()
+            e.printStackTrace()
         }
         val pstFormat: DateFormat = SimpleDateFormat(desiredFormat, Locale.ENGLISH)
         val result = pstFormat.format(date)
         println(result)
         Log.e("Local Date", result + "")
         return result
+    }
+
+    fun convertDate(dateTime: String){
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        val outputFormat = SimpleDateFormat("dd-MM-yyyy")
+        val date = inputFormat.parse(dateTime)
+        val formattedDate = outputFormat.format(date)
+        println("--------------------------- oye")
+        println(formattedDate)
     }
 
     fun isDeviceOnline(context: Context): Boolean {
@@ -108,4 +133,27 @@ object Utils {
         }
         return isConnected
     }
+
+    fun getHoursAndMinutes(dateTime: String) : Pair<Int,Int> {
+        val calendar = Calendar.getInstance()
+        calendar.time = getDate(dateTime)
+        val differenceMillis = System.currentTimeMillis() - calendar.timeInMillis
+        calendar.timeInMillis = differenceMillis
+        return Pair(calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE))
+    }
+
+    fun redirectUserToUrl(activity: Activity, webUrl: String?) {
+        if (webUrl.isNullOrEmpty()) return
+        var url = webUrl
+        val isRecognizable = webUrl.startsWith("http://") || webUrl.startsWith("https://")
+        url = (if (isRecognizable) "" else "http://") + webUrl
+        try {
+            val openWebUrl = Intent(Intent.ACTION_VIEW)
+            openWebUrl.data = Uri.parse(webUrl)
+            activity.startActivity(openWebUrl)
+        } catch (e: ActivityNotFoundException) {
+            e.printStackTrace()
+        }
+    }
+
 }
